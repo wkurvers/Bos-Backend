@@ -5,7 +5,15 @@ It consist of the following main 3 files (read the end for explanation of the ot
 
 ***1. Database.py***
    
-   This file contains the code nessesary to connect to the database and generate its tables. To add more tables simply define a new        class that takes Base as a parameter, then define all the colums the table must have. use User as example:
+   This file contains the code nessesary to connect to the database and generate its tables. Make sure to edit the dbname, username and password when generating your the tables (an empty database must already exists with the name: [dbname], for xampp both apache and mysql must be running when executing this file. See below
+   ```python
+   dbName = 'bos-db'
+   userName = 'root'
+   password = ''
+
+   conn = sqla.create_engine('mysql+pymysql://' + userName + ':' + password + '@localhost/' + dbName + '?charset=utf8')
+   ```
+   To add more tables simply define a new class that takes Base as a parameter, then define all the colums the table must have. use User as example:
  ```python
  class User(Base):
     __tablename__ = 'User'
