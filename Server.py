@@ -37,7 +37,7 @@ def removeUser():
 	data = request.get_json()
 	if data != None:
 		return jsonify({"response": userApi.removeUser(data.get('id'))})
-	return response({"response": False, "msg": "Please make sure to send json data"})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 #POST request to login a user
 #Fields:
