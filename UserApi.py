@@ -20,7 +20,7 @@ class UserApi():
 		if self.checkData(arrayOfData):
 			hashedPw = hashlib.sha256(password.encode('utf-8')).hexdigest()
 			path = "C:/Users/Jelmer/Bos-Backend/profilephoto's/"
-			mediaPath = path + name + "Photo.txt"
+			mediaPath = path + name + "Base64.txt"
 			mediaFile = open(mediaPath, "w+")
 			mediaFile.write(profilePhoto)
 			mediaFile.close()

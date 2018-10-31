@@ -14,11 +14,10 @@ class MediaApi():
 
 	def storeMedia(self, project, name, media):
 		path = "C:/Users/Jelmer/Bos-Backend/media/"
-		mediaPath = path + name + "Blob.txt"
+		mediaPath = path + name + "Base64.txt"
 		mediaFile = open(mediaPath, "w+")
 		mediaFile.write(media)
 		mediaFile.close()
-		print(mediaPath)
 
 		mediaObject = Media ( 
 								project=project,
