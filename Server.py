@@ -4,6 +4,7 @@ from UserApi import UserApi
 from MediaApi import MediaApi
 from FollowerApi import FollowerApi
 from ProjectApi import ProjectApi
+from EventApi import EventApi
 import os
 from flask import Flask, render_template, request, redirect, jsonify
 
@@ -13,6 +14,8 @@ app.secret_key = os.urandom(24)
 userApi = UserApi()
 mediaApi = MediaApi()
 followerApi = FollowerApi()
+projectApi = ProjectApi()
+eventApi = EventApi()
 
 
 @app.route('/', defaults={'path': ''})
@@ -133,6 +136,20 @@ def getFollowersForProject():
 	data = request.get_json()
 	if data != None:
 		return jsonify({"response": followerApi.getFollowersForProject(data.get('project'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/addProject', methods=['POST'])
+def addProject():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": projectApi.addProject(data.get('title'), data.get('description'), data.get('thumbnail'), data.get('creator'), data.get('beginDate'), data.get('endDate'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/addEvent', methods=['POST'])
+def addEvent():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": eventApi.addEvent(data.get('title'), data.get('description'), data.get('project'), data.get('beginDate'), data.get('endDate'))})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 @app.route('/addLike', methods=['POST'])
