@@ -1,6 +1,8 @@
 import ChatApi
 import Persister
 from UserApi import UserApi
+from MediaApi import MediaApi
+from FollowerApi import FollowerApi
 import os
 from flask import Flask, render_template, request, redirect, jsonify
 from pymongo import MongoClient
@@ -10,6 +12,8 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 userApi = UserApi()
+mediaApi = MediaApi()
+followerApi = FollowerApi()
 
 
 @app.route('/', defaults={'path': ''})
@@ -28,6 +32,10 @@ def testServer():
 #	name: string
 #	email: string (must not be already in db)
 #   password: string (unhashed)
+# 	locationCity: string
+# 	profilePhoto: string (base64 image)
+# 	description: string
+# 	organisation: string
 @app.route('/register', methods=['POST'])
 def registerUser():
     data = request.get_json()
@@ -89,6 +97,41 @@ def storeChatMessages():
 def getChatMessages():
     return ChatApi.storeChatMessages()
 
+
+@app.route('/storeMedia', methods=['POST'])
+def storeMedia():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": mediaApi.storeMedia(data.get('project'), data.get('name'), data.get('media'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/removeMedia', methods=['POST'])
+def removeMedia():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": mediaApi.removeMedia(data.get('id'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/addFollower', methods=['POST'])
+def addFollower():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": followerApi.addFollower(data.get('project'), data.get('user'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/removeFollower', methods=['POST'])
+def removeFollower():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": followerApi.removeFollower(data.get('id'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/getFollowersForProject', methods=['POST'])
+def getFollowersForProject():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": followerApi.getFollowersForProject(data.get('project'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
