@@ -24,7 +24,7 @@ def route(path):
     return render_template('index.html')
 
 
-@app.route('/test', methods=['GET'])
+@app.route('/test', methods=['POST'])
 def testServer():
     return jsonify({"working": True})
 
@@ -162,21 +162,24 @@ def addEvent():
 @app.route('/addLike', methods=['POST'])
 def addLike():
     id = request.args.get('id')
-    return ProjectApi.addLike(id)
+    return projectApi.addLike(id)
 
 @app.route('/removeLike', methods=['POST'])
 def removeLike():
     id = request.args.get('id')
-    return ProjectApi.removeLike(id)
+    return projectApi.removeLike(id)
 
 @app.route('/totalLikes', methods=['POST'])
 def totalLikes():
     id = request.args.get('id')
-    return ProjectApi.totalLikes(id)
+    return projectApi.totalLikes(id)
 
-@app.route('/getAllProjects', methods=['GET'])
+@app.route('/getAllProjects', methods=['POST'])
 def getAllProjects():
-    result = ProjectApi.getAllProjects()
+    data = request.get_json()
+    print(data.get("id"))
+    result = projectApi.getAllProjects()
+    print("hallo")
     if len(result) > 0:
         return jsonify({"responseCode": 200, "projects": result})
     return jsonify({"responseCode": 400, "projects": {}})
