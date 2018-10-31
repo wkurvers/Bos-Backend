@@ -89,13 +89,16 @@ def logoutUser():
 @app.route('/storeChatMessages', methods=["POST"])
 def storeChatMessages():
     messageObject = request.args.get('messageObject')
-    chatId = request.args.get('chatId')
-    ChatApi.storeChatMessages(chatId, messageObject)
+    owner = request.args.get('owner')
+    user = request.args.get('user')
+    ChatApi.storeChatMessages(owner,user, messageObject)
 
 
 @app.route('/getChatMessages', methods=["GET"])
 def getChatMessages():
-    return ChatApi.storeChatMessages()
+    owner = request.args.get('owner')
+    user = request.args.get('user')
+    return ChatApi.storeChatMessages(owner, user)
 
 
 @app.route('/storeMedia', methods=['POST'])
@@ -132,6 +135,10 @@ def getFollowersForProject():
 	if data != None:
 		return jsonify({"response": followerApi.getFollowersForProject(data.get('project'))})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/addLike', methods=['POST'])
+def getFollowersForProject():
+    UserApi.addLike()
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)

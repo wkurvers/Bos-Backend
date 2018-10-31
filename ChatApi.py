@@ -1,11 +1,12 @@
 import os
-
+import Persister
 from flask import jsonify
 
 
-def storeChatMessages(chatId,messageObject):
+def storeChatMessages(owner, user,messageObject):
 
     path = "C:/Users/Wouter/IdeaProjects/BosBackend/chat"
+    chatId = Persister.getChatId(owner,user)
     chatPath = path + chatId + ".txt"
     if(os.path.isfile(chatPath)):
         chatFile = open(chatPath, "a")
@@ -16,10 +17,11 @@ def storeChatMessages(chatId,messageObject):
 
     chatFile.close()
 
-def getChatMessages(chatId):
+def getChatMessages(owner, user):
 
     path = "C:/Users/Wouter/IdeaProjects/BosBackend/chat"
+    chatId = Persister.getChatId(owner,user)
     chatPath = path + chatId + ".txt"
-    with open(path, 'r') as content_file:
+    with open(chatPath, 'r') as content_file:
         content = content_file.read()
         return jsonify({'messages': content})
