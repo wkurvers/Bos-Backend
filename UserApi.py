@@ -14,11 +14,19 @@ class UserApi():
 	def getUserByEmail(self, email):
 		return persister.getUserByEmail(email) #User object
 
-	def saveUser(self, name, email, password):
-		arrayOfData = [name, email, password]
+	def saveUser(self, name, email, password,
+				 locationCity, profilePhoto, description , organisation):
+		arrayOfData = [name, email, password, locationCity, profilePhoto, description , organisation]
 		if self.checkData(arrayOfData):
 			hashedPw = hashlib.sha256(password.encode('utf-8')).hexdigest()
-			userObject = User(name=name.lower(), email=email.lower(), password=hashedPw, authenticated=False)
+			userObject = User(	name=name.lower(), 
+								email=email.lower(), 
+								password=hashedPw, 
+								authenticated=False,
+								locationCity=locationCity,
+								profilePhoto=profilePhoto,
+								description=description,
+								organisation=organisation)
 			return persister.storeObject(userObject) #True or False depening on succes
 		return False #1 or more necessary fields were empty
 
