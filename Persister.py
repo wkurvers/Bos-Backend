@@ -1,7 +1,7 @@
 import sqlalchemy as sqla
 from sqlalchemy.orm import sessionmaker, scoped_session
 import Database
-from Database import User
+from Database import User, Media, Follower, Project
 
 tableName = 'bos-db'
 userName = 'root'
@@ -26,6 +26,7 @@ class Persister:
 
 	def deleteObject(self, object):
 		db = Session()
+		print(object)
 		try:
 			db.delete(object)
 			db.commit()
@@ -77,3 +78,51 @@ class Persister:
 			return False
 		db.close()
 		return True
+
+	def getMediaById(self,id):
+		db = Session()
+		media = db.query(Media).filter(Media.id == id).first()
+		db.close()
+		if media is not None:
+			return media
+		return False
+
+	def getFollowerById(self,id):
+		db = Session()
+		follower = db.query(Follower).filter(Follower.id == id).first()
+		db.close()
+		if follower is not None:
+			return follower
+		return False
+
+	def getProjectById(self,id):
+		db = Session()
+		project = db.query(Project).filter(Project.id == id).first()
+		db.close()
+		if project is not None:
+			return project
+		return False
+
+	def checkFollowerExists(self, user, project):
+		db = Session()
+		follower = db.query(Follower).filter(Follower.user == user).filter(Follower.project == project).first()
+		db.close()
+		if follower is not None:
+			return False
+		return True
+
+	def getFollowerByContext(self, user, project):
+		db = Session()
+		follower = db.query(Follower).filter(Follower.user == user).filter(Follower.project == project).first()
+		db.close()
+		if follower is not None:
+			return follower
+		return False
+
+	def getFollowersByProject(self, project):
+		db = Session()
+		followers = db.query(Follower).filter(Follower.project == project).all()
+		db.close()
+		if followers is not None:
+			return followers
+		return False
