@@ -24,7 +24,7 @@ def route(path):
     return render_template('index.html')
 
 
-@app.route('/test', methods=['GET'])
+@app.route('/test', methods=['POST'])
 def testServer():
     return jsonify({"working": True})
 
@@ -121,7 +121,7 @@ def removeMedia():
 def addFollower():
 	data = request.get_json()
 	if data != None:
-		return jsonify({"response": followerApi.addFollower(data.get('project'), data.get('user'))})
+		return jsonify({"response": followerApi.addFollower(data.get('project'), data.get('user'), data.get('deviceId'))})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 @app.route('/removeFollower', methods=['POST'])
@@ -137,6 +137,13 @@ def getFollowersForProject():
 	if data != None:
 		return jsonify({"response": followerApi.getFollowersForProject(data.get('project'))})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/pushFollowers', methods=['POST'])
+def pushFollowers():
+    data = request.get_json()
+    if data != None:
+        return jsonify({"response": followerApi.pushFollowers(data.get('project'))})
+    return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 @app.route('/addProject', methods=['POST'])
 def addProject():
@@ -155,24 +162,23 @@ def addEvent():
 @app.route('/addLike', methods=['POST'])
 def addLike():
     id = request.args.get('id')
-    return ProjectApi.addLike(id)
+    return projectApi.addLike(id)
 
 @app.route('/removeLike', methods=['POST'])
 def removeLike():
     id = request.args.get('id')
-    return ProjectApi.removeLike(id)
+    return projectApi.removeLike(id)
 
 @app.route('/totalLikes', methods=['POST'])
 def totalLikes():
     id = request.args.get('id')
-    return ProjectApi.totalLikes(id)
+    return projectApi.totalLikes(id)
 
-@app.route('/getAllProjects', methods=['GET'])
+@app.route('/getAllProjects', methods=['POST'])
 def getAllProjects():
-    result = ProjectApi.getAllProjects()
-    if len(result) > 0:
-        return jsonify({"responseCode": 200, "projects": result})
-    return jsonify({"responseCode": 400, "projects": {}})
+    data = request.get_json()
+    result = projectApi.getAllProjects()
+    return jsonify({"response": result})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
