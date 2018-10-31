@@ -97,5 +97,19 @@ def addFollower():
 		return jsonify({"response": followerApi.addFollower(data.get('project'), data.get('user'))})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
+@app.route('/removeFollower', methods=['POST'])
+def removeFollower():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": followerApi.removeFollower(data.get('id'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/getFollowersForProject', methods=['POST'])
+def getFollowersForProject():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": followerApi.getFollowersForProject(data.get('project'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
 if __name__ == "__main__":
 	app.run(host='0.0.0.0', debug=True)

@@ -110,3 +110,19 @@ class Persister:
 		if follower is not None:
 			return False
 		return True
+
+	def getFollowerByContext(self, user, project):
+		db = Session()
+		follower = db.query(Follower).filter(Follower.user == user).filter(Follower.project == project).first()
+		db.close()
+		if follower is not None:
+			return follower
+		return False
+
+	def getFollowersByProject(self, project):
+		db = Session()
+		followers = db.query(Follower).filter(Follower.project == project).all()
+		db.close()
+		if followers is not None:
+			return followers
+		return False
