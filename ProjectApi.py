@@ -1,3 +1,5 @@
+from flask import jsonify
+
 from Database import Project
 import hashlib
 from Persister import Persister
@@ -35,3 +37,12 @@ class ProjectApi():
 									)
 			return persister.storeObject(projectObject)
 		return False
+
+    # def addLike(self, id):
+    #     Persister.addLike(id)
+
+    # def removeLike(self, id):
+    #     Persister.removeLike(id)
+
+    # def totalLikes(self, id):
+    #     return jsonify({"totalLikes": Persister.totalLikes(id)})
