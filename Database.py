@@ -57,6 +57,7 @@ class Follower(Base):
 	id = sqla.Column('id', sqla.Integer, primary_key=True, autoincrement=True, unique=True)
 	project = sqla.Column('project',sqla.Integer,sqla.ForeignKey('Project.id'))
 	user = sqla.Column('user', sqla.Integer, sqla.ForeignKey('User.id'))
+	deviceId = sqla.Column('devide-id', sqla.VARCHAR(64))
 
 class Connection(Base):
 	__tablename__ = 'Connection'

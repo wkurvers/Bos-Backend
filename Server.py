@@ -121,7 +121,7 @@ def removeMedia():
 def addFollower():
 	data = request.get_json()
 	if data != None:
-		return jsonify({"response": followerApi.addFollower(data.get('project'), data.get('user'))})
+		return jsonify({"response": followerApi.addFollower(data.get('project'), data.get('user'), data.get('deviceId'))})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 @app.route('/removeFollower', methods=['POST'])
@@ -137,6 +137,13 @@ def getFollowersForProject():
 	if data != None:
 		return jsonify({"response": followerApi.getFollowersForProject(data.get('project'))})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/pushFollowers', methods=['POST'])
+def pushFollowers():
+    data = request.get_json()
+    if data != None:
+        return jsonify({"response": followerApi.pushFollowers(data.get('project'))})
+    return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 @app.route('/addProject', methods=['POST'])
 def addProject():
