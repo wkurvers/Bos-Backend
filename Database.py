@@ -64,12 +64,5 @@ class Connection(Base):
 	owner = sqla.Column('owner',sqla.Integer,sqla.ForeignKey('User.id'))
 	user = sqla.Column('user', sqla.Integer, sqla.ForeignKey('User.id'))
 
-class ConnectionRequest(Base):
-	__tablename__ = 'ConnectionRequest'
-	id = sqla.Column('id', sqla.Integer, primary_key=True, autoincrement=True, unique=True)
-	owner = sqla.Column('owner',sqla.Integer,sqla.ForeignKey('User.id'))
-	user = sqla.Column('user', sqla.Integer, sqla.ForeignKey('User.id'))
-	project = sqla.Column('project',sqla.Integer,sqla.ForeignKey('Project.id'))
-	accepted = sqla.Column('accepted', sqla.Boolean)
 
 Base.metadata.create_all(conn)

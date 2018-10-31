@@ -19,7 +19,7 @@ class FollowerApi():
 
 	def addFollower(self, project, user):
 		if not persister.getProjectById(project) == False and not persister.getUserById(user) == False:
-			if persister.checkFollowerExists(user, project):
+			if not persister.checkFollowerExists(user, project):
 				followerObject = Follower( user=user, project=project)
 				return persister.storeObject(followerObject)
 		return False
@@ -33,13 +33,11 @@ class FollowerApi():
 	def getFollowersForProject(self,project):
 		followersArray = persister.getFollowersByProject(project)
 		returnData = {}
-		index = 0
 		for entry in followersArray:
 			follower = {}
 			follower['id'] = entry.id
 			follower['project'] = entry.project
 			follower['user'] = entry.user
-			returnData[index] = follower
-			index += 1
+			returnData[entry.id] = follower
 		return returnData
 
