@@ -1,5 +1,6 @@
 import Persister
 from UserApi import UserApi
+from MediaApi import MediaApi
 import os
 from flask import Flask, render_template, request, redirect, jsonify
 
@@ -7,6 +8,7 @@ app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
 userApi = UserApi()
+mediaApi = MediaApi()
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -22,6 +24,10 @@ def testServer():
 #	name: string
 #	email: string (must not be already in db)
 #   password: string (unhashed)
+# 	locationCity
+# 	profilePhoto
+# 	description
+# 	organisation
 @app.route('/register', methods=['POST'])
 def registerUser():
 	data = request.get_json()
@@ -29,7 +35,7 @@ def registerUser():
 		return jsonify({"response": userApi.saveUser(
 				data.get('name'),
 			 	data.get('email'), 
-			 	data.get('password')
+			 	data.get('password'),
 			 	data.get('locationCity'),
 			 	data.get('profilePhoto'), 
 			 	data.get('description'), 
@@ -66,6 +72,20 @@ def logoutUser():
 	data = request.get_json()
 	if data != None:
 		return jsonify({"response": userApi.logoutUser(data.get('email'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/storeMedia', methods=['POST'])
+def storeMedia():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": mediaApi.storeMedia(data.get('project'), data.get('name'), data.get('media'))})
+	return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/removeMedia', methods=['POST'])
+def removeMedia():
+	data = request.get_json()
+	if data != None:
+		return jsonify({"response": mediaApi.removeMedia(data.get('id'))})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 if __name__ == "__main__":

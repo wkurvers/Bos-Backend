@@ -1,7 +1,7 @@
 import sqlalchemy as sqla
 from sqlalchemy.orm import sessionmaker, scoped_session
 import Database
-from Database import User
+from Database import User, Media
 
 tableName = 'bos-db'
 userName = 'root'
@@ -26,6 +26,7 @@ class Persister:
 
 	def deleteObject(self, object):
 		db = Session()
+		print(object)
 		try:
 			db.delete(object)
 			db.commit()
@@ -77,3 +78,11 @@ class Persister:
 			return False
 		db.close()
 		return True
+
+	def getMediaById(self,id):
+		db = Session()
+		media = db.query(Media).filter(Media.id == id).first()
+		db.close()
+		if media is not None:
+			return media
+		return False
