@@ -1,5 +1,5 @@
 import os
-import Persister
+from Persister import Persister
 from flask import jsonify
 
 

@@ -3,6 +3,7 @@ import Persister
 from UserApi import UserApi
 from MediaApi import MediaApi
 from FollowerApi import FollowerApi
+from ProjectApi import ProjectApi
 import os
 from flask import Flask, render_template, request, redirect, jsonify
 from pymongo import MongoClient
@@ -137,8 +138,19 @@ def getFollowersForProject():
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 @app.route('/addLike', methods=['POST'])
-def getFollowersForProject():
-    UserApi.addLike()
+def addLike():
+    id = request.args.get('id')
+    ProjectApi.addLike(id)
+
+@app.route('/removeLike', methods=['POST'])
+def removeLike():
+    id = request.args.get('id')
+    ProjectApi.removeLike(id)
+
+@app.route('/totalLikes', methods=['POST'])
+def totalLikes():
+    id = request.args.get('id')
+    return ProjectApi.totalLikes(id)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
