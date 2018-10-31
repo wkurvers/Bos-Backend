@@ -26,7 +26,15 @@ def testServer():
 def registerUser():
 	data = request.get_json()
 	if data != None:
-		return jsonify({"response": userApi.saveUser(data.get('name'), data.get('email'), data.get('password'))})
+		return jsonify({"response": userApi.saveUser(
+				data.get('name'),
+			 	data.get('email'), 
+			 	data.get('password')
+			 	data.get('locationCity'),
+			 	data.get('profilePhoto'), 
+			 	data.get('description'), 
+			 	data.get('organisation')
+			 	)})
 	return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 #POST request to remove an existing user
