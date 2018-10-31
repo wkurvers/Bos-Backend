@@ -128,10 +128,32 @@ class Persister:
             return followers
         return False
 
-
     def getChatId(owner, user):
         db = Session()
         chatId = db.query(Connection.id).filter(owner == Connection.owner).filter(user == Connection.user).first()
         return chatId
+        db.commit()
+        db.close()
+
+    def addLike(self,id):
+        db = Session()
+        like = db.query(Project.likes).filter(Project.id == id).first()
+        like += 1
+        db.commit()
+        db.close()
+
+
+    def removeLike(self, id):
+        db = Session()
+        like = db.query(Project.likes).filter(Project.id == id).first()
+        like -= 1
+        db.commit()
+        db.close()
+
+
+    def totalLikes(self, id):
+        db = Session()
+        like = db.query(Project.likes).filter(Project.id == id).first()
+        return like
         db.commit()
         db.close()

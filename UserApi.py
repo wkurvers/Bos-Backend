@@ -64,7 +64,3 @@ class UserApi():
 			if data == '' or data == None:
 				return False
 		return True
-
-
-	def addLike(self):
-		Persister.addLike()
