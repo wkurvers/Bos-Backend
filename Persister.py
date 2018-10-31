@@ -1,7 +1,7 @@
 import sqlalchemy as sqla
 from sqlalchemy.orm import sessionmaker, scoped_session
 import Database
-from Database import User, Media
+from Database import User, Media, Follower, Project
 
 tableName = 'bos-db'
 userName = 'root'
@@ -86,3 +86,27 @@ class Persister:
 		if media is not None:
 			return media
 		return False
+
+	def getFollowerById(self,id):
+		db = Session()
+		follower = db.query(Follower).filter(Follower.id == id).first()
+		db.close()
+		if follower is not None:
+			return follower
+		return False
+
+	def getProjectById(self,id):
+		db = Session()
+		project = db.query(Project).filter(Project.id == id).first()
+		db.close()
+		if project is not None:
+			return project
+		return False
+
+	def checkFollowerExists(self, user, project):
+		db = Session()
+		follower = db.query(Follower).filter(Follower.user == user).filter(Follower.project == project).first()
+		db.close()
+		if follower is not None:
+			return False
+		return True

@@ -52,19 +52,19 @@ class Media(Base):
 	name = sqla.Column('name', sqla.VARCHAR(64))
 	mediaPath = sqla.Column('mediaPath', sqla.VARCHAR(500))
 
-class Follower():
+class Follower(Base):
 	__tablename__ = 'Follower'
 	id = sqla.Column('id', sqla.Integer, primary_key=True, autoincrement=True, unique=True)
 	project = sqla.Column('project',sqla.Integer,sqla.ForeignKey('Project.id'))
 	user = sqla.Column('user', sqla.Integer, sqla.ForeignKey('User.id'))
 
-class Connection():
+class Connection(Base):
 	__tablename__ = 'Connection'
 	id = sqla.Column('id', sqla.Integer, primary_key=True, autoincrement=True, unique=True)
 	owner = sqla.Column('owner',sqla.Integer,sqla.ForeignKey('User.id'))
 	user = sqla.Column('user', sqla.Integer, sqla.ForeignKey('User.id'))
 
-class ConnectionRequest():
+class ConnectionRequest(Base):
 	__tablename__ = 'ConnectionRequest'
 	id = sqla.Column('id', sqla.Integer, primary_key=True, autoincrement=True, unique=True)
 	owner = sqla.Column('owner',sqla.Integer,sqla.ForeignKey('User.id'))
