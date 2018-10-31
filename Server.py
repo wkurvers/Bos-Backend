@@ -177,12 +177,8 @@ def totalLikes():
 @app.route('/getAllProjects', methods=['POST'])
 def getAllProjects():
     data = request.get_json()
-    print(data.get("id"))
     result = projectApi.getAllProjects()
-    print("hallo")
-    if len(result) > 0:
-        return jsonify({"responseCode": 200, "projects": result})
-    return jsonify({"responseCode": 400, "projects": {}})
+    return jsonify({"response": result})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
