@@ -155,17 +155,24 @@ def addEvent():
 @app.route('/addLike', methods=['POST'])
 def addLike():
     id = request.args.get('id')
-    ProjectApi.addLike(id)
+    return ProjectApi.addLike(id)
 
 @app.route('/removeLike', methods=['POST'])
 def removeLike():
     id = request.args.get('id')
-    ProjectApi.removeLike(id)
+    return ProjectApi.removeLike(id)
 
 @app.route('/totalLikes', methods=['POST'])
 def totalLikes():
     id = request.args.get('id')
     return ProjectApi.totalLikes(id)
+
+@app.route('/getAllProjects', methods=['GET'])
+def getAllProjects():
+    result = ProjectApi.getAllProjects()
+    if len(result) > 0:
+        return jsonify({"responseCode": 200, "projects": result})
+    return jsonify({"responseCode": 400, "projects": {}})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
