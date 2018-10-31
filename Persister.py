@@ -130,30 +130,51 @@ class Persister:
 
     def getChatId(owner, user):
         db = Session()
-        chatId = db.query(Connection.id).filter(owner == Connection.owner).filter(user == Connection.user).first()
-        return chatId
-        db.commit()
-        db.close()
+        if(db.query(Connection.id).filter(owner == Connection.owner).filter(user == Connection.user).count()):
+            chatId = db.query(Connection.id).filter(owner == Connection.owner).filter(user == Connection.user).first()
+            db.commit()
+            db.close()
+            return chatId
+        else:
+            return False
 
-    def addLike(self,id):
+    def addLike(self, id):
         db = Session()
-        like = db.query(Project.likes).filter(Project.id == id).first()
-        like += 1
-        db.commit()
-        db.close()
-
+        try:
+            like = db.query(Project.likes).filter(Project.id == id).first()
+            like += 1
+            db.commit()
+            db.close()
+            return True
+        except:
+            db.close()
+            return False
 
     def removeLike(self, id):
         db = Session()
         like = db.query(Project.likes).filter(Project.id == id).first()
-        like -= 1
-        db.commit()
-        db.close()
-
+        if (like <= 0):
+            db.close()
+            return False
+        else:
+            like -= 1
+            db.commit()
+            db.close()
 
     def totalLikes(self, id):
         db = Session()
         like = db.query(Project.likes).filter(Project.id == id).first()
-        return like
         db.commit()
         db.close()
+        return like
+
+    def getAllProjects(self):
+        db = Session()
+        if db.query(Project).count():
+            events = db.query(Project).order_by(Project.beginDate).all()
+            db.close()
+            return events
+        else:
+            return {}
+
+
