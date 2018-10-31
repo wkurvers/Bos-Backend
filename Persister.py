@@ -1,7 +1,7 @@
 import sqlalchemy as sqla
 from sqlalchemy.orm import sessionmaker, scoped_session
 import Database
-from Database import User, Media, Follower, Project
+from Database import User, Media, Follower, Project, ConnectionRequest
 
 tableName = 'bos-db'
 userName = 'root'
@@ -43,6 +43,14 @@ class Persister:
 		db.close()
 		if user is not None:
 			return user
+		return False
+
+	def checkUserExists(self, id):
+		db = Session()
+		user = db.query(User).filter(User.id == id).first()
+		db.close()
+		if user is not None:
+			return True
 		return False
 
 	#gets a user object by email, returns user object or False
@@ -108,8 +116,8 @@ class Persister:
 		follower = db.query(Follower).filter(Follower.user == user).filter(Follower.project == project).first()
 		db.close()
 		if follower is not None:
-			return False
-		return True
+			return True
+		return False
 
 	def getFollowerByContext(self, user, project):
 		db = Session()
@@ -126,3 +134,17 @@ class Persister:
 		if followers is not None:
 			return followers
 		return False
+
+	def checkProjectExists(self, id):
+		db = Session()
+		project = db.query(Project).filter(Project.id == id).first()
+		db.close()
+		if project is not None:
+			return True
+		return False
+
+	def getAllEvents(self):
+		db = Session()
+		events = db.query(Event).all()
+		db.close()
+		return events
