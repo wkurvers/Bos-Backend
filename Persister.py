@@ -1,6 +1,6 @@
 import sqlalchemy as sqla
 from sqlalchemy.orm import sessionmaker, scoped_session
-from Database import User, Media, Follower, Project, Connection
+from Database import User, Media, Follower, Project, Connection, NecessitiesRequest
 tableName = 'bos-db'
 userName = 'root'
 password = ''
@@ -150,7 +150,7 @@ class Persister:
 		db.close()
 		return events
 
-	def getChatId(owner, user):
+	def getChatId(self,owner, user):
 		db = Session()
 		if(db.query(Connection.id).filter(owner == Connection.owner).filter(user == Connection.user).count()):
 			chatId = db.query(Connection.id).filter(owner == Connection.owner).filter(user == Connection.user).first()
@@ -193,11 +193,27 @@ class Persister:
 	def getAllProjects(self):
 		db = Session()
 		if db.query(Project).count():
-			events = db.query(Project).order_by(Project.beginDate).all()
+			projects = db.query(Project).order_by(Project.beginDate).all()
 			db.close()
-			return events
+			return projects
 		else:
 			return {}
 
+	def getAllRequests(self):
+		db = Session()
+		if db.query(Project).count():
+			requests = db.query(NecessitiesRequest).order_by(NecessitiesRequest.createdAt).all()
+			db.close()
+			return requests
+		else:
+			return {}
+
+	def getRequestById(self, id):
+		db = Session()
+		request = db.query(NecessitiesRequest).filter(NecessitiesRequest.id == id).first()
+		db.close()
+		if request is not None:
+			return request
+		return False
 
 
