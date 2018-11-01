@@ -65,5 +65,15 @@ class Connection(Base):
 	owner = sqla.Column('owner',sqla.Integer,sqla.ForeignKey('User.id'))
 	user = sqla.Column('user', sqla.Integer, sqla.ForeignKey('User.id'))
 
+class NecessitiesRequest(Base):
+	__tablename__ = 'NecessitiesRequest'
+	id = sqla.Column('id', sqla.Integer, primary_key=True, autoincrement=True, unique=True)
+	owner = sqla.Column('owner',sqla.Integer,sqla.ForeignKey('User.id'))
+	title = sqla.Column('title', sqla.VARCHAR(100))
+	description = sqla.Column('description', sqla.VARCHAR(1000))
+	necessity = sqla.Column('necessity', sqla.VARCHAR(500))
+	createdAt = sqla.Column('createdAt',sqla.DATETIME)
+
+
 
 Base.metadata.create_all(conn)

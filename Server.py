@@ -5,6 +5,7 @@ from MediaApi import MediaApi
 from FollowerApi import FollowerApi
 from ProjectApi import ProjectApi
 from EventApi import EventApi
+from NecessitiesRequestApi import NecessitiesRequestApi
 import os
 from flask import Flask, render_template, request, redirect, jsonify
 
@@ -16,6 +17,7 @@ mediaApi = MediaApi()
 followerApi = FollowerApi()
 projectApi = ProjectApi()
 eventApi = EventApi()
+necessitiesRequestApi = NecessitiesRequestApi()
 
 
 @app.route('/', defaults={'path': ''})
@@ -179,6 +181,27 @@ def getAllProjects():
     data = request.get_json()
     result = projectApi.getAllProjects()
     return jsonify({"response": result})
+
+@app.route('/makeNecessityRequest', methods=['POST'])
+def makeRequest():
+    data = request.get_json()
+    if data != None:
+        return jsonify({"response": necessitiesRequestApi.makeRequest(data.get('owner'), data.get('title'), data.get('description'), data.get('necessity'))})
+    return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/getNecessityRequestById', methods=['POST'])
+def getRequest():
+    data = request.get_json()
+    if data != None:
+        return jsonify({"response": necessitiesRequestApi.getRequestById(data.get('id'))})
+    return jsonify({"response": False, "msg": "Please make sure to send json data"})
+
+@app.route('/getAllNecessityRequests', methods=['POST'])
+def getAllRequests():
+    data = request.get_json()
+    if data != None:
+        return jsonify({"response": necessitiesRequestApi.getAllRequests()})
+    return jsonify({"response": False, "msg": "Please make sure to send json data"})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True)
